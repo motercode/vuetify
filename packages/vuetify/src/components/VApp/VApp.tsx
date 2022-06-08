@@ -8,6 +8,7 @@ import { createLayout, makeLayoutProps } from '@/composables/layout'
 // Utilities
 import { defineComponent, useRender } from '@/util'
 import { useRtl } from '@/composables/rtl'
+import { Suspense } from 'vue'
 
 export const VApp = defineComponent({
   name: 'VApp',
@@ -35,7 +36,11 @@ export const VApp = defineComponent({
         data-app="true"
       >
         <div class="v-application__wrap">
-          { slots.default?.() }
+          <Suspense>
+            <>
+              { slots.default?.() }
+            </>
+          </Suspense>
         </div>
       </div>
     ))

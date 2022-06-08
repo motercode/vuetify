@@ -10,7 +10,7 @@ import { useProxiedModel } from '@/composables/proxiedModel'
 
 // Utilities
 import { computed, ref, toRef } from 'vue'
-import { defineComponent } from '@/util'
+import { defineComponent, useRender } from '@/util'
 
 // Types
 import type { PropType } from 'vue'
@@ -53,12 +53,12 @@ export const VAppBar = defineComponent({
     const vToolbarRef = ref()
     const isActive = useProxiedModel(props, 'modelValue')
     const height = computed(() => {
-      const height: number = vToolbarRef.value?.contentHeight ?? 0
+      const height: number = vToolbarRef.value?.contentHeight ?? props.height
       const extensionHeight: number = vToolbarRef.value?.extensionHeight ?? 0
 
       return (height + extensionHeight)
     })
-    const { layoutItemStyles } = useLayoutItem({
+    const { layoutItemStyles, layoutIsReady } = useLayoutItem({
       id: props.name,
       order: computed(() => parseInt(props.order, 10)),
       position: toRef(props, 'location'),
@@ -68,7 +68,7 @@ export const VAppBar = defineComponent({
       absolute: toRef(props, 'absolute'),
     })
 
-    return () => {
+    useRender(() => {
       const [toolbarProps] = filterToolbarProps(props)
 
       return (
@@ -88,7 +88,9 @@ export const VAppBar = defineComponent({
           v-slots={ slots }
         />
       )
-    }
+    })
+
+    return layoutIsReady
   },
 })
 
