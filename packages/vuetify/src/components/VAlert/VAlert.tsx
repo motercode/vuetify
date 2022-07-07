@@ -123,7 +123,7 @@ export const VAlert = defineComponent({
       return isActive.value && (
         <props.tag
           class={[
-            'v-alert',
+            'v-alert', 'mialert',
             props.border && {
               'v-alert--border': !!props.border,
               [`v-alert--border-${props.border === true ? 'start' : props.border}`]: true,
